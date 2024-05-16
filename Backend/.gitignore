@@ -1,0 +1,11 @@
+/node_modules
+
+/private.json
+
+# dotenv environment variables file
+.env
+.env.test
+
+stripe.exe
+
+.history
