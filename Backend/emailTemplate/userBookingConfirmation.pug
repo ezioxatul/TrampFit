@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+</head>
+<body style="font-family: 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="margin-top: 50px; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px;">
+        <tr>
+            <td align="center" bgcolor="#333333" style="padding: 20px 0; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: normal;">TrampFit</h1>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 40px 30px;">
+                <p style="font-size: 16px; color: #555555; line-height: 1.6; margin-bottom: 20px;">
+                    Hello <span style="font-weight: bold;">#{userName}</span>,
+                </p>
+                <p style="font-size: 16px; color: #555555; line-height: 1.6; margin-bottom: 20px;"> Thank you for booking a session with us! Here are the details of your booking:
+                </p>
+                <table width="100%" style="margin: 20px 0; font-size: 16px; color: #555555;">
+                    <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">Session Id:</td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">#{sessionId}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">Gym Name:</td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">#{gymName}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">Date:</td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">#{date}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">Time:</td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">#{sessionTiming}</td>
+                    </tr>
+                </table>
+                <p style="font-size: 16px; color: #555555; line-height: 1.6; margin-bottom: 20px;">We look forward to seeing you. If you have any questions or need to make changes to your booking, please contact us at <a href="mailto:support@gymname.com" style="color: #333333; text-decoration: none;">support@TrampFit.com</a>.
+                </p>
+                <p style="font-size: 16px; color: #555555; line-height: 1.6;">
+                    Best regards,<br>
+                    The TrampFit Team
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" bgcolor="#333333" style="padding: 10px 0; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+                <p style="color: #cccccc; margin: 0; font-size: 14px;">&copy; 2024 TrampFit. All rights reserved.</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

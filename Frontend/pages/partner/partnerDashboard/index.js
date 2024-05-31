@@ -1,4 +1,4 @@
-import PartnerSideBar from '@/components/AdminSideBar';
+import PartnerSideBar from '@/components/PartnerSideBar';
 
 
 export default function partnerDashboard() {

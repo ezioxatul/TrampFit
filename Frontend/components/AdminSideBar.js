@@ -22,7 +22,7 @@ import { useRouter } from 'next/router';
 export default function AdminSideBar() {
 
     let SideBarHeading = ['Users', 'Partners', 'Manage Membership', 'Payment History', 'Logout'];
-    let partnerSubMenu = ['Booked Session', 'Partner Onboarding']
+    let partnerSubMenu = ['Partner Onboarding']
 
     let router = useRouter();
     let [open, setOpen] = useState(false)
@@ -74,17 +74,12 @@ export default function AdminSideBar() {
                                                 {
                                                     partnerSubMenu.map((val, i) => {
                                                         return (
-                                                            i === 0 ?
+                                                            <Link href="/admin/adminDashboard/partners/partnerOnboarding">
                                                                 <ListItemButton sx={{ pl: 4 }} className=' space-x-4 hover:bg-green-100 hover:rounded-2xl hover:text-green-600'>
-                                                                    <FitnessCenterIcon className='text-2xl' />
+                                                                    <CheckBoxIcon className='text-2xl' />
                                                                     <ListItemText primary={val} />
-                                                                </ListItemButton> :
-                                                                <Link href="/admin/adminDashboard/partners/partnerOnboarding">
-                                                                    <ListItemButton sx={{ pl: 4 }} className=' space-x-4 hover:bg-green-100 hover:rounded-2xl hover:text-green-600'>
-                                                                        <CheckBoxIcon className='text-2xl' />
-                                                                        <ListItemText primary={val} />
-                                                                    </ListItemButton>
-                                                                </Link>
+                                                                </ListItemButton>
+                                                            </Link>
                                                         );
                                                     })
                                                 }

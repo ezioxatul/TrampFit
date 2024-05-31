@@ -48,7 +48,7 @@ export default function paymentSuccess() {
                     <center>
                         <Button className=" hover:bg-green-700 bg-green-600 w-32 text-lg  mb-5 mt-5" onClick={handleClaimSession}> Claim Now </Button>
                     </center>
-                    <ToastContainer />
+                    {/* <ToastContainer /> */}
                 </div>
                 <Footer />
             </div>

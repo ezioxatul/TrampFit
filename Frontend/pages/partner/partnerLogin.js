@@ -75,7 +75,7 @@ const partnerLogin = () => {
             if (partnerExistResponse.status === "Approved") {
 
                 setTimeout(() => {
-                  router.push("/partner/partnerDashboard");
+                  router.push("/partner/partnerDashboard/partnerInfo");
                 }, 3000)
 
             } else {

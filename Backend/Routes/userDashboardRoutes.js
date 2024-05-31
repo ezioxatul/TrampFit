@@ -23,4 +23,10 @@ router.get('/getMembershipDetails',userSecretKey,jwtVerification,userDashboardCo
 // get the active membership If Yes
 router.get('/getActiveMembershipDetails',userSecretKey,jwtVerification,userDashboardController.getActiveMembershipController);
 
+// get all booked session 
+router.get('/userDashboard/sessionInfo',userSecretKey,jwtVerification,userDashboardController.getSessionInfoController);
+
+// get last session booked
+router.get('/userDashboard/getLastBookedSession',userSecretKey,jwtVerification,userDashboardController.getLastSessionBookedController)
+
 module.exports = router;

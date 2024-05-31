@@ -42,7 +42,7 @@ const userLoginController = async (req, res) => {
 
         res.json({
             message: "SomeThing Went Wrong !!",
-            error : err,
+            error: err,
             response: false
         })
 
@@ -164,9 +164,25 @@ const emailVerificationController = async (req, res) => {
 }
 
 
+const sendOtpController = async (req, res) => {
+    try {
+
+       
+    } catch (err) {
+        console.log(err);
+
+        res.json({
+            message: "Something Went wrong !!",
+            response: false
+        });
+    }
+}
+
+
 module.exports = {
     userLoginController: userLoginController,
     rootAuthenticationController: rootAuthenticationController,
     userExistsController: userExistsController,
-    emailVerificationController: emailVerificationController
+    emailVerificationController: emailVerificationController,
+    sendOtpController
 }

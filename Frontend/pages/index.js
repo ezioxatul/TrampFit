@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Home() {
 
@@ -27,6 +28,33 @@ export default function Home() {
       span3: "workout sessions and attract others like you",
     },
   ];
+
+  useEffect(()=>{
+    try {
+
+      const option = {
+        method : "PUT"
+      } 
+
+      fetch('http://localhost/partnerDashboard/updateSchedule',option).then(async(res) => {
+        let response = await res.json();
+
+        if(response.response) {
+            console.log(response.response)
+        } else {
+          console.log(response.response)
+        }
+
+      }).catch((err)=> {
+        console.log(err);
+      })
+
+    } catch(err) {
+      console.log(err);
+    }
+  },[])
+
+
   return (
     <>
       <Navbar/>

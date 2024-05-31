@@ -2,8 +2,12 @@
 const signupModel = require('../Models/signUpModel');
 const paymentDetailModel = require('../Models/paymentDetailModel');
 const stripeMethod = require('../helper/stripeFunction');
+const sessionBookingModel = require('../Models/sessionBookingModel');
+const gymDetailModel = require('../Models/gymDetailsModel');
+const sessionTimeModel = require('../Models/sessionModel');
 
 const sequelize = require('../databaseConnection');
+const { where } = require('sequelize');
 
 const userDashboardAuthenticationController = (req, res) => {
     try {
@@ -54,26 +58,26 @@ const deleteUserInfoController = async (req, res) => {
         let mobileNumber = parseInt(req.userDetails.payloadData.mobileNumber);
 
         let subscriptionInfo = await signupModel.findOne({
-            include : [
+            include: [
                 {
-                    model : paymentDetailModel,
-                    attributes : ['subscriptionId'],
-                    as : "paymentInfo",
-                    where : {
-                        status : "active"
+                    model: paymentDetailModel,
+                    attributes: ['subscriptionId'],
+                    as: "paymentInfo",
+                    where: {
+                        status: "active"
                     }
                 }
             ],
-            attributes : [],
-            where : {
-                mobileNumber : mobileNumber
+            attributes: [],
+            where: {
+                mobileNumber: mobileNumber
             }
         })
 
         let subscriptionId = subscriptionInfo.paymentInfo[0].subscriptionId
-        
-        let cancelSubscription =  await stripeMethod.cancelSubscription(subscriptionId);
-        if(cancelSubscription) {
+
+        let cancelSubscription = await stripeMethod.cancelSubscription(subscriptionId);
+        if (cancelSubscription) {
 
             await signupModel.destroy({
                 where: {
@@ -86,10 +90,12 @@ const deleteUserInfoController = async (req, res) => {
                 response: true
             })
         }
-        
-        
+
+
 
     } catch (err) {
+        console.log(err);
+        
         res.json({
             message: "Something went wrong",
             response: false
@@ -122,14 +128,14 @@ const getMembershipDetailController = async (req, res) => {
                     model: paymentDetailModel,
                     attributes: ['subscriptionId', 'subscriptionName', 'paidAmount', 'startDate', 'endDate', 'status', 'downloadInvoice'],
                     as: 'paymentInfo',
-                    order : sequelize.col('id')
+                    order: sequelize.col('id')
                 }
             ],
             attributes: [],
             where: {
                 mobileNumber: mobileNumber
             },
-            order : sequelize.col('id')
+            order: sequelize.col('id')
         })
 
         res.json({
@@ -159,8 +165,8 @@ const getActiveMembershipController = async (req, res) => {
                     model: paymentDetailModel,
                     attributes: ['subscriptionId', 'subscriptionName', 'paidAmount', 'startDate', 'endDate', 'status', 'downloadInvoice'],
                     as: 'paymentInfo',
-                    where : {
-                        status : 'active'
+                    where: {
+                        status: 'active'
                     }
                 }
             ],
@@ -170,7 +176,7 @@ const getActiveMembershipController = async (req, res) => {
             }
         })
 
-        if(getMembershipData.length === 0) {
+        if (getMembershipData.length === 0) {
             res.json({
                 message: "No Active Membership",
                 response: false
@@ -196,11 +202,110 @@ const getActiveMembershipController = async (req, res) => {
     }
 }
 
+
+const getSessionInfoController = async (req, res) => {
+    try {
+
+        let mobileNumber = req.userDetails.payloadData.mobileNumber;
+
+        let getUserSessionHistory = await sessionBookingModel.findAll({
+            include: [
+                {
+                    model: signupModel,
+                    attributes: [],
+                    as: 'userDetails'
+                },
+                {
+                    model: sessionTimeModel,
+                    attributes: ['sessionTiming'],
+                    as: "sessionInfo",
+                    include: [
+                        {
+                            model: gymDetailModel,
+                            attributes: ['gymName', 'gymCity'],
+                            as: 'gymDetails'
+                        }
+                    ]
+                }
+            ],
+            attributes: ['bookingDate', 'id'],
+            where: {
+                '$userDetails.mobileNumber$': mobileNumber
+            },
+            order: sequelize.col('bookingDate')
+        })
+
+        res.json({
+            message: "User Session Information",
+            response: true,
+            data: getUserSessionHistory
+        });
+
+    } catch (err) {
+        console.log(err);
+
+        res.json({
+            message: "Something went wrong !!",
+            response: false
+        });
+    }
+}
+
+const getLastSessionBookedController = async (req, res) => {
+    try {
+
+        let mobileNumber = req.userDetails.payloadData.mobileNumber;
+
+        let getUserSessionHistory = await sessionBookingModel.findOne({
+            include: [
+                {
+                    model: signupModel,
+                    attributes: [],
+                    as: 'userDetails'
+                },
+                {
+                    model: sessionTimeModel,
+                    attributes: ['sessionTiming'],
+                    as: "sessionInfo",
+                    include: [
+                        {
+                            model: gymDetailModel,
+                            attributes: ['gymName', 'gymCity'],
+                            as: 'gymDetails'
+                        }
+                    ]
+                }
+            ],
+            attributes: ['bookingDate', 'id'],
+            where: {
+                '$userDetails.mobileNumber$': mobileNumber
+            },
+            order: [['createdAt', 'DESC']]
+        })
+
+        res.json({
+            message: "Last session booked..",
+            response: true,
+            data: getUserSessionHistory
+        });
+
+    } catch (err) {
+        console.log(err);
+
+        res.json({
+            message: "Something went wrong !!",
+            response: false
+        });
+    }
+}
+
 module.exports = {
     userDashboardAuthenticationController,
     getUserPersonalDetailController,
     deleteUserInfoController,
     tokenCheckController,
     getMembershipDetailController,
-    getActiveMembershipController
+    getActiveMembershipController,
+    getSessionInfoController,
+    getLastSessionBookedController
 }
