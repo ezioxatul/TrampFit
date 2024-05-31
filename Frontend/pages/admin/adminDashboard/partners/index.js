@@ -10,6 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import { useRouter } from "next/router";
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function partners() {
     let router = useRouter();
@@ -22,6 +25,9 @@ export default function partners() {
     let [approvedSwitch, setApprovedSwitch] = useState(true);
     let [rejectedSwitch, setRejectedSwitch] = useState(true);
     let [handleFilterSwitch, setHandleFilterSwitch] = useState(false);
+    let [viewPartnerGymDetail, setViewPartnerGymDetail] = useState(false);
+    let [partnerStatus,setPartnerStatus] = useState();
+    let [partnerGymData,setPartnerGymData] = useState();
 
     let [statusFilter, setStatusFilter] = useState({
         pending: "",
@@ -73,8 +79,10 @@ export default function partners() {
 
                             let newPartnerData = [];
 
+                            console.log(partnerInfo.data);
+
                             partnerInfo.data.map((val) => {
-                                let partnerData = Object.values(val);
+                                let partnerData = Object.values(val.partnerInfo);
                                 partnerData.push('View Detail');
                                 newPartnerData.push(partnerData);
                             })
@@ -120,7 +128,7 @@ export default function partners() {
                     let newPartnerData = [];
 
                     partnerInfo.data.map((val) => {
-                        let partnerData = Object.values(val);
+                        let partnerData = Object.values(val.partnerInfo);
                         partnerData.push('View Detail');
                         newPartnerData.push(partnerData);
                     })
@@ -155,7 +163,7 @@ export default function partners() {
                     let newPartnerData = [];
 
                     partnerInfo.data.map((val) => {
-                        let partnerData = Object.values(val);
+                        let partnerData = Object.values(val.partnerInfo);
                         partnerData.push('View Detail');
                         newPartnerData.push(partnerData);
                     })
@@ -255,6 +263,47 @@ export default function partners() {
         setStatusFilter({ ...statusFilter });
     }
 
+    const handlePartnerGymDetail = async(e) => {
+        let partnerDetails = e.target.id.split(',');
+        let partnerId = partnerDetails[0];
+
+        setPartnerStatus(partnerDetails[4]);
+
+        try {
+
+            let token = localStorage.getItem("adminToken");
+            if(!token) {
+                router.push('/admin');
+            } else {
+                const option = {
+                    method : "GET",
+                    headers : {
+                        Authorization : `Bearer ${token}`
+                    }
+                }
+
+                let gymDetails = await fetch(`http://localhost/adminDashboard/getPartnersGymDetails?partnerId=${partnerId}`,option);
+                gymDetails = await gymDetails.json();
+
+                if(gymDetails.response) {
+                    setPartnerGymData(gymDetails.data);
+                } else {
+                    toast.error(gymDetails.message);
+                }
+            }
+
+        } catch(err) {
+
+            console.log(err);
+
+        }
+
+        setViewPartnerGymDetail(true);
+    }
+
+    const closePartnerGymDetail = ()=> {
+        setViewPartnerGymDetail(false);
+    }
 
     return (
         <>
@@ -269,7 +318,7 @@ export default function partners() {
                         </div>
                         <div className=" flex space-x-4">
                             <Button className=" w-20 h-11 flex justify-around hover:bg-green-700  bg-green-600  p-2 " onClick={handleFilter}>{filterSwitch ? <FilterAltOffIcon className="" /> : <FilterAltIcon className="" />} Filter</Button>
-                            <Button className=" w-20 h-11 flex justify-around hover:bg-green-700  bg-green-600  p-2 "><SortIcon className="" />  Sort</Button>
+                            {/* <Button className=" w-20 h-11 flex justify-around hover:bg-green-700  bg-green-600  p-2 "><SortIcon className="" />  Sort</Button> */}
                         </div>
                     </div>
                     {
@@ -291,8 +340,36 @@ export default function partners() {
                     }
 
                     <div className="border-2 rounded-xl ml-20">
-                        <UserTable columnName={columnName} rowData={partnerInfo} />
+                        <UserTable columnName={columnName} rowData={partnerInfo} viewDetail={handlePartnerGymDetail} />
                     </div>
+
+                    <Dialog open={viewPartnerGymDetail}>
+                        <DialogContent className="w-[35rem] h-[30rem] space-y-6">
+                        <p className=" cursor-pointer hover:text-green-600 transition text-center mt-[-1rem] float-right mr-[-1rem]" onClick={closePartnerGymDetail}><CloseIcon /></p>
+                            <div className="flex justify-between mt-5 ml-4 mr-4">
+                                <h1 className="text-green-600 text-xl flex">{viewPartnerGymDetail && partnerGymData.gymName}</h1>
+                                {   partnerStatus === "Approved" ?
+                                    <p className="text-sm text-green-600 bg-green-100  text-center w-20 pt-0.5 h-[1.7rem] rounded-lg mt-1">{viewPartnerGymDetail && partnerStatus}</p>
+                                    : partnerStatus === "Rejected" ?
+                                    <p className="text-sm text-red-600 bg-red-100  text-center w-20 pt-0.5 h-[1.7rem] rounded-lg mt-1">{viewPartnerGymDetail && partnerStatus}</p>
+                                    :
+                                    <p className="text-sm text-yellow-500 bg-yellow-100  text-center w-20 pt-0.5 h-[1.7rem] rounded-lg mt-1">{viewPartnerGymDetail && partnerStatus}</p>
+                                }
+                            </div>
+                        
+                            <p className="text-green-600 ml-4">Timing  :<span className="text-gray-400"> {viewPartnerGymDetail && partnerGymData.openingTime} AM to {viewPartnerGymDetail && partnerGymData.closingTime} PM</span></p>
+                          
+                            <div className="ml-4 space-y-1">
+                                <p className=" text-green-600">Location :</p>
+                                <p className=" text-gray-400 ">{viewPartnerGymDetail && partnerGymData.gymLocation} , {viewPartnerGymDetail && partnerGymData.gymCity}</p>    
+                            </div>
+
+                            <div className="ml-4 space-y-1">
+                            <p className=" text-green-600">Description :</p>
+                                <p className=" text-gray-400 ">{viewPartnerGymDetail && partnerGymData.gymDescription}</p>    
+                            </div>
+                        </DialogContent>
+                    </Dialog>
                 </div>
                 <ToastContainer />
             </div>

@@ -11,6 +11,6 @@ const passingAdminSecretKey = (req,res,next) => {
             message : "Something went wrong !!"
         })
     }
-} 
+}
 
 module.exports = passingAdminSecretKey;

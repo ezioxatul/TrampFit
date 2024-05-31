@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useRouter } from "next/router";
-import userId from "./[userId]";
+
 
 export default function User() {
     let router = useRouter();
@@ -113,7 +113,14 @@ export default function User() {
     const handleUserViewDetail = (e)=>{
         let userData = e.target.id.split(',');
         let userId = userData[0];
-        router.push(`/admin/adminDashboard/users/${userId}`);
+        let userName = userData[1];
+        
+        router.push({
+            pathname : `/admin/adminDashboard/users/${userId}` ,
+            query : {
+                userName : userName
+            }
+        });
     }
 
     return (
@@ -127,7 +134,7 @@ export default function User() {
                             <Input type="text" className=" text-lg  w-80 h-11 pl-10 border border-green-600" placeholder="Search " onChange={handleSearchData} />
                             <SearchIcon className="absolute ml-2  mt-[-2.1rem] h-6 w-6  text-green-600" />
                         </div>
-                        <Button className=" w-20 h-11 flex justify-around hover:bg-green-700  bg-green-600  p-2 "><SortIcon className="" />  Sort</Button>
+                        {/* <Button className=" w-20 h-11 flex justify-around hover:bg-green-700  bg-green-600  p-2 "><SortIcon className="" />  Sort</Button> */}
                     </div>
                     <div className="border-2 rounded-xl ml-20">
                         <UserTable columnName={columnName} rowData={userInfo} viewDetail={handleUserViewDetail}/>

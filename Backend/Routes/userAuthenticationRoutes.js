@@ -19,5 +19,8 @@ router.get('/userExists',userAuthenticationController.userExistsController);
 // inserting the data taking from the frontend
 router.post('/userLogin',userAuthenticationController.userLoginController);
 
+// sending otp 
+router.get('/sendOtp',userAuthenticationController.sendOtpController);
+
 
 module.exports = router;

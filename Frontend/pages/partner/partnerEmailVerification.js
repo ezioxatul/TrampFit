@@ -44,7 +44,7 @@ export default function partnerEmailVerification() {
 
             if (jsonResponse.response) {
 
-                localStorage.setItem('token', jsonResponse.token)
+                localStorage.setItem('partnerToken', jsonResponse.token)
                 localStorage.removeItem('partnerDetails')
                 toast.success(jsonResponse.message)
                 
@@ -79,7 +79,7 @@ export default function partnerEmailVerification() {
                             <h1 className=" text-center text-xl">We have sent an verification email into your <span className=" text-green-600">google </span> account</h1>
                         </div>
                 }
-                <ToastContainer />
+                {/* <ToastContainer /> */}
                 <Footer />
             </div>
         </>
