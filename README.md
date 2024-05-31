@@ -20,7 +20,7 @@ TrampFit is a gym session booking platform designed to simplify the process of s
 - **Session Booking System**: Browse and book available gym sessions.
 - **Payment Integration**: Secure payment gateway for processing session payments.
 - **Admin Panel**: Manage sessions, user accounts, and bookings.
-- **Responsive Design**: Consistent user experience across various devices.
+- **Partner Panel**: Personalizer dashboard for gym owners to manage their gym info.
 
 ## Tech Stack
 
@@ -105,4 +105,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-Feel free to customize this README file according to your project's specifics.
