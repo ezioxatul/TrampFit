@@ -1,7 +1,12 @@
 
 # TrampFit
 
+![WhatsApp Image 2024-05-26 at 18 37 51_b1b966e9](https://github.com/ezioxatul/TrampFit/assets/119116696/893fcb17-84ce-4675-8312-a89c1f967e57)
+
+
 TrampFit is a gym session booking platform designed to simplify the process of scheduling workout sessions for fitness enthusiasts. The platform offers a subscription-based model that allows users to book sessions at any associated gyms, providing greater flexibility and convenience.
+
+
 
 ## Table of Contents
 
